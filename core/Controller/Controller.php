@@ -64,5 +64,15 @@ class Controller {
         return false;
     }
 
+    /**
+     * Return un JSON
+     * @param array $array
+     * @param int $code
+     */
+    public function returnJSON(Array $array, $code = 200){
+        if($code != 200)
+            http_response_code($code);
+        echo json_encode($array);
+    }
 
 }

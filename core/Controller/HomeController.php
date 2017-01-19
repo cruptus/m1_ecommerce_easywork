@@ -21,15 +21,19 @@ class HomeController extends Controller {
      * permet de retourner la home page
      * @throws \App\Router\RouterException
      */
-    public function index(){
+    public function dashboard(){
         $this->render("home");
+    }
+
+    public function gestion(){
+        $this->render("gestion");
     }
 
     /**
      * Redirection vers la page home
      */
     public function racine(){
-        header('Location: /home');
+        header('Location: /dashboard');
         die();
     }
 

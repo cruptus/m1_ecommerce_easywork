@@ -58,6 +58,10 @@ class Model
             $attribute = $this->fields[$i];
             $attributes[$attribute] = $this->$attribute;
         }
-        return App::getDataBase()->insert($this->className, $attributes);
+        try{
+            return App::getDataBase()->insert($this->className, $attributes);
+        }catch (\Exception $exceptione){
+            return false;
+        }
     }
 }

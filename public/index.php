@@ -12,7 +12,12 @@ $router = new App\Router\Router($_GET['url']);
 $router->get("maintenance", "MaintenanceController@Maintenance");
 
 $router->get("/", 'HomeController@Racine');
+$router->get("dashboard", "HomeController@Dashboard");
 
-$router->get("home", "HomeController@index");
+$router->get("gestion", "HomeController@Gestion");
+
+// Articles (Full Ajax)
+$router->get("/article", "Gestion\\ArticleController@Add");
+$router->get("/article/:id", "Gestion\\ArticleController@Update")->with("id", '[0-9]+');
 
 $router->run();

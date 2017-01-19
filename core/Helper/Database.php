@@ -38,27 +38,11 @@ class Database{
     /**
      * @param $statement
      * @param $attributes
-     * @param $class_name
-     * @param bool $one
      * @return array|mixed
      */
-    public function prepare($statement, $attributes, $class_name = false, $one = false){
+    public function prepare($statement, $attributes){
         $req = $this->pdo->prepare($statement);
-        $req->execute($this->protect($attributes));
-        if($one){
-            if($class_name){
-                $datas = $req->fetch(PDO::FETCH_CLASS, $class_name);
-            }else{
-                $datas = $req->fetch();
-            }
-        }else{
-            if($class_name){
-                $datas = $req->fetchAll(PDO::FETCH_CLASS, $class_name);
-            }else{
-                $datas = $req->fetchAll();
-            }
-        }
-        return $datas;
+        return ($req->execute($attributes)) ? $req : false;
     }
 
     /**
@@ -91,4 +75,24 @@ class Database{
         return $this->pdo->lastInsertId();
     }
 
+
+    public function insert($table, $fields){
+        $query = "INSERT INTO $table (";
+        $items = "VALUES (";
+        $values = array();
+
+        foreach ($fields as $key => $value){
+            $values[':'.$key] = $value;
+            $query .= $key;
+            $items .= ':'.$key;
+            if(end($fields) != $value) {
+                $query .= ', ';
+                $items .= ', ';
+            } else {
+                $query .= ')';
+                $items .= ')';
+            }
+        }
+        return $this->pdo->prepare($query.$items)->execute($values);
+    }
 }
